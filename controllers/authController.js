@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
 const userModel = require("../models/userModel");
 
 async function signin(req, res) {
@@ -38,7 +37,7 @@ async function signup(req, res) {
       });
     }
   } catch (error) {
-    console.log("error", error);
+    console.log("error here", error);
   }
 }
 

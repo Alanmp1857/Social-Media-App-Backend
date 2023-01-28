@@ -117,9 +117,37 @@ async function unfollowUser(req, res) {
   }
 }
 
-// async function createPost(req, res) {
-//   const { post } = req.body;
-// }
+//Dummy create Post, it can done with the help of jwt
+async function createPost(req, res) {
+  const { post, username } = req.body;
+  const user = userModel.findOne({ username: username });
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  } else {
+    user.posts.push(post);
+    await user.save();
+    return res.json({
+      message: "Post created successfully",
+    });
+  }
+}
+
+async function viewPost(req, res) {
+  const { username } = req.body;
+  const user = userModel.findOne({ username: username });
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  } else {
+    return res.json({
+      message: "View your post",
+      posts: user.posts,
+    });
+  }
+}
 
 module.exports = {
   getUser,
@@ -127,4 +155,6 @@ module.exports = {
   getFollowing,
   followUser,
   unfollowUser,
+  createPost,
+  viewPost,
 };

@@ -6,6 +6,8 @@ const {
   getFollowing,
   followUser,
   unfollowUser,
+  createPost,
+  viewPost,
 } = require("../controllers/userController");
 
 const userRouter = express.Router();
@@ -21,5 +23,7 @@ userRouter.route("/:username/following").get(getFollowing);
 userRouter.route("/:username/followers").get(getFollowers);
 
 userRouter.route("/:username/follow").post(followUser).delete(unfollowUser);
+
+userRouter.route("/:username/post").post(createPost).get(viewPost);
 
 module.exports = userRouter;

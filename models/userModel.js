@@ -1,17 +1,26 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const emailValidator = require("email-validator");
+require("dotenv").config();
+
+console.log(process.env);
+const api_key = process.env.API_KEY;
 
 const link =
-  "mongodb+srv://Punisher007:UyPDb2yEAowxd624@cluster0.libvpiv.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://Punisher007:api_key@cluster0.libvpiv.mongodb.net/?retryWrites=true&w=majority";
 
-mongoose.connect(link, () => {
-  try {
-    console.log("UserDB Connected!");
-  } catch (err) {
-    console.log("Error", err);
-  }
-});
+mongoose
+  .connect(link, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    try {
+      console.log("UserDB Connected!");
+    } catch (err) {
+      console.log("Error", err);
+    }
+  });
 
 const userSchema = mongoose.Schema({
   username: {
@@ -49,7 +58,7 @@ const userSchema = mongoose.Schema({
     default: [],
   },
   posts: {
-    type: String,
+    type: Array,
   },
 });
 

@@ -3,11 +3,9 @@ const bcrypt = require("bcryptjs");
 const emailValidator = require("email-validator");
 require("dotenv").config();
 
-console.log(process.env);
 const api_key = process.env.API_KEY;
 
-const link =
-  "mongodb+srv://Punisher007:api_key@cluster0.libvpiv.mongodb.net/?retryWrites=true&w=majority";
+const link = `mongodb+srv://Punisher007:${api_key}@cluster0.libvpiv.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose
   .connect(link, {
@@ -59,6 +57,7 @@ const userSchema = mongoose.Schema({
   },
   posts: {
     type: Array,
+    default: [],
   },
 });
 

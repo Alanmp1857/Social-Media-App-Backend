@@ -31,7 +31,7 @@ async function getFollowers(req, res) {
     } else {
       return res.json({
         message: `${user.username} list`,
-        user: user.followers,
+        followers: user.followers,
       });
     }
   } catch (error) {
@@ -50,7 +50,7 @@ async function getFollowing(req, res) {
     } else {
       return res.json({
         message: `${user.username} Following list`,
-        user: user.following,
+        following: user.following,
       });
     }
   } catch (error) {
@@ -62,6 +62,7 @@ async function followUser(req, res) {
   try {
     const { username } = req.params;
     const { followerName } = req.body;
+    console.log(followerName);
     const follower = await userModel.findOne({ username: followerName });
     const user = await userModel.findOne({ username });
     if (!user) {
@@ -119,13 +120,15 @@ async function unfollowUser(req, res) {
 
 //Dummy create Post, it can done with the help of jwt
 async function createPost(req, res) {
-  const { post, username } = req.body;
-  const user = userModel.findOne({ username: username });
+  const { post } = req.body;
+  const { username } = req.params;
+  const user = await userModel.findOne({ username: username });
   if (!user) {
     return res.status(404).json({
       message: "User not found",
     });
   } else {
+    console.log(user.posts, typeof user.posts, username);
     user.posts.push(post);
     await user.save();
     return res.json({
@@ -135,13 +138,14 @@ async function createPost(req, res) {
 }
 
 async function viewPost(req, res) {
-  const { username } = req.body;
-  const user = userModel.findOne({ username: username });
+  const { username } = req.params;
+  const user = await userModel.findOne({ username });
   if (!user) {
     return res.status(404).json({
       message: "User not found",
     });
   } else {
+    console.log(user.username, username);
     return res.json({
       message: "View your post",
       posts: user.posts,
